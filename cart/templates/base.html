@@ -1,0 +1,99 @@
+ {% load staticfiles %}
+{% load bootstrap3 %}
+ <!DOCTYPE html>
+<html >
+<head>
+
+        <title>{% block title %}{% endblock %}</title>
+
+     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+     <link rel="stylesheet" type="text/css" href="{% static 'accounts/main.css' %}">
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    height: 20px;
+    width: 200px;
+}
+
+img:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+</style>
+
+</head>
+<body>
+ <header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+                <a class="navbar-brand mr-4" href="#">SPORTSBANGLA</a>
+             <div class="collapse navbar-collapse" id="navbarToggle">
+                 <div class="navbar-nav mr-auto">
+
+                        <a class="nav-item nav-link" href="http://127.0.0.1:8000/account/">Home</a>
+                        <a class="nav-item nav-link" href="#">About</a>
+
+                 </div>
+                 <div class="navbar-nav" style="float:right;">
+
+                        {% if user.is_authenticated %}
+                       <a class="nav-item nav-link" href="/account/profile/edit">Profile:</a>
+
+                        <a class="nav-item nav-link" class="nav-link disabled" href="#">{{user}}</a>
+                        <a class="nav-item nav-link"  href="/account/logout">Logout</a>
+
+          {% else %}
+
+                <a class="nav-item nav-link" href="/account/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                 <a class="nav-item nav-link" href="/account/register"><span class="glyphicon glyphicon-log-in"></span> Register</a>
+
+          {% endif %}
+           </div>
+      </div>
+               </div>
+      </nav>
+    </header>
+<br>
+<br>
+<br>
+<div class="container">
+{% if user.is_authenticated %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {# call __len__ #}
+            {% with total_items=cart|length %}
+                {% if cart|length > 0 %}
+                    Your cart:
+                    <a href="{% url "cart:cart_detail" %}">
+                        {# If total_items is 1, the output will be 1 item. #}
+                        {# If total_items is 2, the output will be 2 items. #}
+                        {{ total_items }} item{{ total_items|pluralize }},
+                        BDT {{ cart.get_total_price }}
+                    </a>
+
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+{% endif %}
+
+    {% block content %}
+    {% endblock %}
+</div>
+{% block body %}
+
+{% endblock %}
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
